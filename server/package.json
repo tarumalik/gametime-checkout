@@ -1,0 +1,15 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Mock payments API for the Gametime checkout app",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node --test"
+  },
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "private": true
+}
