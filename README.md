@@ -88,3 +88,11 @@ The double-charge test to run: set latency to 8s in the dev menu, pay by card, k
 - An end-to-end suite (Maestro) for the lifecycle rows that are currently a documented manual matrix run on both platforms.
 - Screen reader announcements for the decline and stalled transitions: `accessibilityLiveRegion` is Android only, so iOS VoiceOver stays silent on those banners today. Plus Dynamic Type and contrast checks.
 - Saved payment methods, receipts and promo codes, which were out of scope by design.
+
+## 7. AI usage
+
+I used Claude as a working partner. Coming from a decade of native iOS, I used it to speed up my ramp-up on the React Native ecosystem: environment setup, implementation drafts against decisions I'd already made, and research into platform behavior (PassKit capability checks, Google Pay readiness, AppState semantics, Stripe's idempotency model).
+
+I treated its output as a draft to be challenged. I checked platform claims against primary documentation and pinned behavior with tests (106 app, 15 server). Beyond that, I dry-ran every state a user could land in (network drops mid-charge, leaving the app mid-payment and coming back, already-paid retries, deep-link replays) on the iOS simulator and Android emulator, and revised the design and code as I went. Those walkthroughs, alongside adversarial review of my own code, surfaced real defects that I fixed: a reconcile path that could report "not charged" after a network drop, a 409 already-paid response that dead-ended instead of resolving to confirmation, and an Android deep-link replay that needed a nonce check in the Affirm flow. Each fix is pinned by a test.
+
+The architecture and tradeoffs above are mine, including the alternatives I rejected and why. I'm happy to walk through any of them.
